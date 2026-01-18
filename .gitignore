@@ -1,5 +1,15 @@
+# Python
 __pycache__/
+*.py[cod]
+
+# Jupyter
 .ipynb_checkpoints/
-.venv/
-.env
-*.pyc
+
+# IDE
+.vscode/
+.idea/
+
+# CatBoost
+catboost_info/
+notebooks/catboost_info/
+
