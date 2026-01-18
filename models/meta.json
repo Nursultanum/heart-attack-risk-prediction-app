@@ -1,0 +1,37 @@
+{
+  "cat_features": [
+    "Gender",
+    "Diet"
+  ],
+  "feature_columns": [
+    "Age",
+    "Cholesterol",
+    "Heart rate",
+    "Diabetes",
+    "Family History",
+    "Smoking",
+    "Obesity",
+    "Alcohol Consumption",
+    "Exercise Hours Per Week",
+    "Diet",
+    "Previous Heart Problems",
+    "Medication Use",
+    "Stress Level",
+    "Sedentary Hours Per Day",
+    "Income",
+    "BMI",
+    "Triglycerides",
+    "Physical Activity Days Per Week",
+    "Sleep Hours Per Day",
+    "Blood sugar",
+    "CK-MB",
+    "Troponin",
+    "Gender",
+    "Systolic blood pressure",
+    "Diastolic blood pressure"
+  ],
+  "threshold": 0.36224489795918363,
+  "output_mode": "class",
+  "target": "Heart Attack Risk (Binary)",
+  "model_type": "CatBoostClassifier"
+}
