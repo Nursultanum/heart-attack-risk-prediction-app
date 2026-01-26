@@ -17,6 +17,7 @@ class DataPreprocessor:
         if "Unnamed: 0" in df.columns:
             df = df.drop(columns=["Unnamed: 0"])
 
+        # Boolean mask indicating rows without any missing values
         clean_mask = (~df.isna().any(axis=1)).values 
 
         df_clean = df.loc[clean_mask].copy()

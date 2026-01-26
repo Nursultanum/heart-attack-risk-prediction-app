@@ -26,17 +26,17 @@ def main():
     df_clean, _, dropped_ids, _ = pre.split_clean_and_fallback(df)
     df = df_clean
 
-    # целевая
+    # target variable
     target = "Heart Attack Risk (Binary)"
 
-    # cat признаки
+    # categorical features
     cat_features = ["Gender", "Diet"]
 
-    # X/y
+    # X / y
     X = df.drop(columns=[target], errors="ignore")
     y = df[target]
 
-    # Сохраним порядок фичей (без id)
+    # Save feature order (excluding id)
     feature_columns = [c for c in X.columns if c != "id"]
 
     X_train, X_val, y_train, y_val = train_test_split(
@@ -75,8 +75,8 @@ def main():
     meta = {
         "cat_features": cat_features,
         "feature_columns": feature_columns,
-        "threshold": 0.36224489795918363,  # средний порог
-        "output_mode": "class",            
+        "threshold": 0.36224489795918363,  # average threshold
+        "output_mode": "class",
         "target": target,
         "model_type": "CatBoostClassifier",
     }

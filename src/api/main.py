@@ -12,8 +12,8 @@ app = FastAPI(
     version="0.1.0",
     openapi_tags=[
         {
-            "name": "Загрузка данных для предсказания",
-            "description": "Приём CSV-файла",
+            "name": "Data upload for prediction",
+            "description": "CSV file ingestion",
         }
     ],
 )
@@ -28,13 +28,13 @@ class PredictRequest(BaseModel):
 
 @app.post(
     "/predict",
-    tags=["Загрузка данных для предсказания"],
-    summary="Предсказание риска сердечного приступа",
+    tags=["Data upload for prediction"],
+    summary="Heart attack risk prediction",
     description=(
-        "Принимает путь к CSV-файлу. "
-        "Предсказания выполняются только для строк без пропусков. "
-        "Для строк с NaN используется fallback-логика (prediction = 0). "
-        "Возвращает результат предсказаний и список ID, для которых применён fallback."
+        "Accepts a path to a CSV file. "
+        "Predictions are performed only for rows without missing values. "
+        "For rows containing NaN values, fallback logic is applied (prediction = 0). "
+        "Returns prediction results and a list of IDs for which fallback was applied."
     ),
 )
 def predict(req: PredictRequest):
@@ -47,7 +47,7 @@ def predict(req: PredictRequest):
     try:
         df = pd.read_csv(path)
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Failed to read csv: {e}")
+        raise HTTPException(status_code=400, detail=f"Failed to read CSV: {e}")
 
     try:
         df_clean, df_fallback, fallback_ids, clean_mask = PRE.split_clean_and_fallback(df)

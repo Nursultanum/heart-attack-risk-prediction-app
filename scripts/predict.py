@@ -20,22 +20,22 @@ def main():
 
     predictor = Predictor()
 
-    # 1) предсказания только для clean (в том же порядке, что df_clean)
+    # 1) predictions only for clean rows (in the same order as df_clean)
     preds_clean = predictor.predict(df_clean)  # DF: id, prediction
 
-    # 2) prediction для всех строк test.csv (fallback=0)
+    # 2) prediction for all rows in test.csv (fallback = 0)
     pred_all = np.zeros(len(df), dtype=int)  
 
-    # 3) вставляем предсказания модели на clean-позиции
+    # 3) insert model predictions at clean positions
     pred_all[clean_mask] = preds_clean["prediction"].astype(int).values
 
-    # 4) собираем итог строго в исходном порядке test.csv
+    # 4) assemble the final result strictly in the original order of test.csv
     preds_all = pd.DataFrame({
         "id": df["id"].astype(int).values,
         "prediction": pred_all
     })
 
-    # 5) сохраняем
+    # 5) save results
     preds_all.to_csv(OUT_PRED, index=False)
 
     OUT_FALLBACK.write_text(
@@ -43,7 +43,7 @@ def main():
         encoding="utf-8"
     )
 
-    # самопроверки
+    # self-checks
     assert list(preds_all.columns) == ["id", "prediction"]
     assert len(preds_all) == len(df)
     assert preds_all["prediction"].isna().sum() == 0

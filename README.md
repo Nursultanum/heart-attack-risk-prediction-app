@@ -1,13 +1,13 @@
 # Heart Attack Risk Predictor
 
-Проект представляет собой приложение для предсказания риска сердечного приступа на основе медицинских и поведенческих данных пациентов.
-Решение включает исследование данных, обучение модели машинного обучения и сервис на **FastAPI** для выполнения предсказаний на тестовой выборке.
+This project is an application for predicting the risk of a heart attack based on patients’ medical and behavioral data.
+The solution includes exploratory data analysis, machine learning model training, and a **FastAPI** service for generating predictions on a test dataset.
 
-Подробный анализ данных (EDA), выбор модели, настройка гиперпараметров и обоснование методологии представлены в Jupyter Notebook `EDA_and_modeling.ipynb`.
+A detailed data analysis (EDA), model selection, hyperparameter tuning, and methodological justification are presented in the Jupyter Notebook `EDA_and_modeling.ipynb`.
 
 ---
 
-## 1. Структура проекта
+## 1. Project Structure
 
 ```
 medical_project_repo/
@@ -42,7 +42,7 @@ medical_project_repo/
 
 ---
 
-## 2. Используемый стек
+## 2. Technology Stack
 
 * Python
 * Pandas, NumPy
@@ -52,13 +52,13 @@ medical_project_repo/
 
 ---
 
-## 3. Окружение и зависимости
+## 3. Environment and Dependencies
 
-Проект тестировался в окружении:
+The project was tested in the following environment:
 
 * Python 3.10 (Conda)
 
-### Основные зависимости
+### Core Dependencies
 
 * catboost==1.2.8
 * pandas==2.3.3
@@ -69,7 +69,7 @@ medical_project_repo/
 * uvicorn==0.40.0
 * pydantic==2.12.5
 
-### Дополнительные зависимости
+### Additional Dependencies
 
 * matplotlib==3.10.8
 * seaborn==0.13.2
@@ -77,75 +77,75 @@ medical_project_repo/
 
 ---
 
-## 4. Исследование данных и моделирование (EDA)
+## 4. Exploratory Data Analysis and Modeling (EDA)
 
-Исследование данных, анализ распределений признаков, обработка пропусков, выбор модели и настройка гиперпараметров выполнены в Jupyter Notebook:
+Data exploration, feature distribution analysis, missing value handling, model selection, and hyperparameter tuning were performed in the Jupyter Notebook:
 
 * `EDA_and_modeling.ipynb`
 
-В ноутбуке представлены:
+The notebook includes:
 
-* анализ качества и структуры исходных данных;
-* выявление и интерпретация пропусков в данных;
-* выбор модели;
-* подбор оптимального порога классификации;
-* выводы по качеству модели.
+* analysis of data quality and structure;
+* identification and interpretation of missing values;
+* model selection;
+* optimization of the classification threshold;
+* conclusions regarding model performance.
 
-Все архитектурные и методологические решения, использованные в приложении, основаны на результатах данного исследования.
+All architectural and methodological decisions used in the application are based on the results of this analysis.
 
 ---
 
-## 5. Обучение модели
+## 5. Model Training
 
-Для обучения модели используется очищенная тренировочная выборка без пропусков.
-Строки с техническими пропусками не используются при обучении.
+Model training is performed on a cleaned training dataset without missing values.
+Rows containing technical missing values are excluded from training.
 
-Запуск обучения из корня проекта:
+To run training from the project root:
 
 ```bash
 python -m scripts.train
 ```
 
-В результате будут сохранены:
+As a result, the following files are saved:
 
-* модель: `models/model.cbm`
-* метаданные: `models/meta.json` (список признаков, порог классификации и настройки вывода)
+* model: `models/model.cbm`
+* metadata: `models/meta.json` (feature list, classification threshold, and output settings)
 
 ---
 
-## 6. Локальное получение предсказаний (без API)
+## 6. Local Prediction Generation (Without API)
 
-Предсказания формируются **строго для всех строк тестового файла**, как требуется в техническом задании.
+Predictions are generated **strictly for all rows of the test file**, as required by the technical specification.
 
-### Логика обработки
+### Processing Logic
 
-* для строк **без пропусков** используется обученная модель;
-* для строк **с пропусками** применяется fallback-логика: `prediction = 0`;
-* итоговый файл формируется **в исходном порядке строк CSV-файла**;
-* дополнительно сохраняется отдельный список `id`, для которых была применена fallback-логика.
+* rows **without missing values** are processed using the trained model;
+* rows **with missing values** use fallback logic: `prediction = 0`;
+* the final output file is created **in the original row order of the CSV file**;
+* an additional list of `id` values is saved for which fallback logic was applied.
 
-Запуск:
+Execution:
 
 ```bash
 python -m scripts.predict
 ```
 
-Результаты:
+Outputs:
 
-* `predictions.csv` — файл с колонками `id, prediction` (строго по ТЗ);
-* `fallback_ids.json` — список `id`, для которых была применена fallback-логика (`prediction = 0`) из-за наличия пропусков в данных.
+* `predictions.csv` — file with columns `id, prediction` (strictly according to the specification);
+* `fallback_ids.json` — list of `id` values for which fallback logic (`prediction = 0`) was applied due to missing data.
 
 ---
 
-## 7. Запуск FastAPI сервиса
+## 7. Running the FastAPI Service
 
-Запуск сервиса из корня проекта:
+Start the service from the project root:
 
 ```bash
 uvicorn src.api.main:app --reload
 ```
 
-Swagger-документация доступна по адресу:
+Swagger documentation is available at:
 
 ```
 http://127.0.0.1:8000/docs
@@ -153,15 +153,15 @@ http://127.0.0.1:8000/docs
 
 ---
 
-## 8. Использование API
+## 8. API Usage
 
 ### Endpoint
 
 `POST /predict`
 
-### Входные данные
+### Input
 
-JSON с путём к CSV-файлу на диске:
+JSON containing the path to a CSV file on disk:
 
 ```json
 {
@@ -169,14 +169,14 @@ JSON с путём к CSV-файлу на диске:
 }
 ```
 
-### Логика обработки
+### Processing Logic
 
-* предсказания выполняются **только для строк без NaN**;
-* строки с пропусками получают `prediction = 0` (fallback-логика);
-* итог возвращается **в исходном порядке исходного CSV-файла**;
-* дополнительно возвращается отдельный список `id`, для которых была применена fallback-логика из-за наличия пропусков в данных.
+* predictions are generated **only for rows without NaN values**;
+* rows with missing values receive `prediction = 0` (fallback logic);
+* results are returned **in the original order of the input CSV file**;
+* an additional list of `id` values is returned for which fallback logic was applied due to missing data.
 
-### Ответ
+### Response
 
 ```json
 {
@@ -190,35 +190,35 @@ JSON с путём к CSV-файлу на диске:
 
 ---
 
-## 9. Проверки соответствия техническому заданию
+## 9. Compliance with the Technical Specification
 
-Гарантируется:
+The following guarantees are provided:
 
-* `predictions.csv` содержит **ровно 2 колонки**: `id`, `prediction`;
-* количество строк совпадает с исходным тестовым файлом;
-* пропусков в `prediction` нет;
-* значения `prediction` принадлежат множеству `{0, 1}`;
-* порядок строк полностью соответствует исходному CSV;
-* дополнительно формируется список `id`, для которых была применена fallback-логика.
-
----
-
-## 10. Примечания по методологии
-
-* Пропуски в данных имеют **системный и технический характер**, поэтому не имитируются и не импутируются.
-* Для медицинской задачи выбран консервативный подход: строки с пропусками получают `prediction = 0`.
-* Формируется отдельный список `id`, для которых была применена fallback-логика.
-* Основная метрика качества модели — **ROC-AUC**, дополнительная — **F1-score** с оптимизированным порогом классификации.
-* Использована модель **CatBoostClassifier**, устойчивая к нелинейностям и выбросам.
+* `predictions.csv` contains **exactly two columns**: `id`, `prediction`;
+* the number of rows matches the original test file;
+* there are no missing values in `prediction`;
+* `prediction` values belong to the set `{0, 1}`;
+* row order strictly matches the original CSV file;
+* an additional list of `id` values is generated for which fallback logic was applied.
 
 ---
 
-## 11. Итог
+## 10. Methodological Notes
 
-Проект реализует полный ML-пайплайн:
+* Missing values in the data are **systematic and technical**, therefore they are neither simulated nor imputed.
+* A conservative approach is chosen for the medical task: rows with missing values receive `prediction = 0`.
+* A separate list of `id` values is generated for which fallback logic was applied.
+* The primary model evaluation metric is **ROC-AUC**; an additional metric is **F1-score** with an optimized classification threshold.
+* The **CatBoostClassifier** model is used, as it is robust to nonlinearities and outliers.
 
-* исследование и анализ данных;
-* обучение и оценку модели;
-* воспроизводимые предсказания;
-* сервис для использования модели;
-* строгую валидацию формата ответа в соответствии с техническим заданием.
+---
+
+## 11. Summary
+
+The project implements a complete ML pipeline:
+
+* data exploration and analysis;
+* model training and evaluation;
+* reproducible prediction generation;
+* a service for model usage;
+* strict validation of output format in accordance with the technical specification.

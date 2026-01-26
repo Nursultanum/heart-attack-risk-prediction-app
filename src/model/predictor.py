@@ -10,7 +10,7 @@ class Predictor:
         self.model.load_model(model_path)
 
         meta = json.loads(Path(meta_path).read_text(encoding="utf-8"))
-        self.feature_columns = meta["feature_columns"]  # без id и без target
+        self.feature_columns = meta["feature_columns"]  # without id and without target
         self.cat_features = meta["cat_features"]
         self.output_mode = meta.get("output_mode", "proba")
         self.threshold = float(meta.get("threshold", 0.5))
@@ -21,7 +21,7 @@ class Predictor:
 
         X = df_clean.drop(columns=["id"], errors="ignore")
 
-        # Проверяем, что все нужные колонки на месте
+        # Check that all required columns are present
         missing = [c for c in self.feature_columns if c not in X.columns]
         if missing:
             raise ValueError(f"Missing required columns: {missing}")
